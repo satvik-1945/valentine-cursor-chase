@@ -20,7 +20,7 @@ app.use(express.json());
 
 let emails =[];
 
-const signupLimiter = reateLimit({
+const signupLimiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 hour
   max: 5, // limit each IP to 5 requests per windowMs
   message: "Too many signups — chill 😄"
