@@ -58,7 +58,7 @@ async function submitEmail() {
   }
 
   try {
-    const res = await fetch("https://YOUR-RENDER-URL/save-email", {
+    const res = await fetch("https://valentine-cursor-chase.onrender.com/save-email", {
       method:"POST",
       headers:{"Content-Type":"application/json"},
       body: JSON.stringify({email})
