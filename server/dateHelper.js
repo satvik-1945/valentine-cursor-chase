@@ -5,7 +5,7 @@ export function getValentineIndex(){
      const day = today.getDate();
      const start = 7;
      const end = 14;
-     if(day<start || day>end)return null;
+     if(today.getMonth()!==1 || day<start || day>end)return 0;
 
      return day - start;
 }
