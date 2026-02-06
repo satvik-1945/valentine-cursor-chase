@@ -1,10 +1,11 @@
 const noBtn = document.getElementById("noBtn");
 const yesBtn = document.getElementById("yesBtn");
+const yesBaseTransform = yesBtn.style.transform || "";
+const yesBaseTransition = yesBtn.style.transition || "";
 
 const memes = [
   "https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif",
-  "https://media.giphy.com/media/3o7TKMt1VVNkHV2PaE/giphy.gif",
-  "https://media.giphy.com/media/QBd2kLB5qDmysEXre9/giphy.gif"
+ 
 ];
 
 let hoverCount = 0;
@@ -66,6 +67,7 @@ function submitEmail() {
 }
 
 function eatNoButton() {
+  yesBtn.disabled = true;
 
   // move YES near NO position
   const noRect = noBtn.getBoundingClientRect();
@@ -74,8 +76,9 @@ function eatNoButton() {
   const dx = noRect.left - yesRect.left;
   const dy = noRect.top - yesRect.top;
 
+  yesBtn.classList.add("eating");
   yesBtn.style.transform = `translate(${dx}px, ${dy}px) scale(2)`;
-  yesBtn.style.transition = "all 0.5s ease-in-out";
+  yesBtn.style.transition = "transform 0.5s ease-in-out";
 
   yesBtn.animate([
   { transform: "scale(1)" },
@@ -88,9 +91,13 @@ function eatNoButton() {
 
   setTimeout(() => {
     noBtn.style.display = "none";
-
-    triggerYesSuccess(); 
-
+    yesBtn.style.transition = "transform 0.4s ease-in-out";
+    yesBtn.style.transform = yesBaseTransform;
+    setTimeout(() => {
+      yesBtn.classList.remove("eating");
+      yesBtn.disabled = false;
+      yesBtn.style.transition = yesBaseTransition;
+    }, 450);
   }, 500);
 }
 
