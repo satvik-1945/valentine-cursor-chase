@@ -1,0 +1,39 @@
+body {
+  text-align:center;
+  background:#ffe6f0;
+  font-family:Arial;
+  margin-top:100px;
+}
+
+.card {
+  background:white;
+  padding:40px;
+  border-radius:20px;
+  display:inline-block;
+}
+
+button {
+  padding:12px 24px;
+  font-size:18px;
+  margin:10px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+}
+
+.eat-grow {
+  transform: scale(2);
+  transition: transform 0.5s ease-in-out;
+}
+
+.eaten {
+  transform: scale(0);
+  opacity: 0;
+  transition: all 0.5s ease-in-out;
+}
+
+#yesBtn { background:#ff4d6d; color:white; }
+#noBtn { background:#999; color:white; position:relative; }
+
+#popup { display:none; }
+img { width:200px; }
