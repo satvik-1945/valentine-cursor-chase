@@ -45,7 +45,7 @@ document.addEventListener("mousemove", e => {
   setTimeout(() => heart.remove(), 600);
 });
 
-function submitEmail() {
+async function submitEmail() {
   const email = document.getElementById("email").value.trim();
 
   if(email.length === 0){
@@ -57,13 +57,21 @@ function submitEmail() {
     return;
   }
 
-  fetch("/save-email", {
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body: JSON.stringify({email})
-  });
-
-  alert("Registered for Valentine Week 💌");
+  try {
+    const res = await fetch("/save-email", {
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({email})
+    });
+    const message = await res.text();
+    if (!res.ok) {
+      alert(message || "Something went wrong 💔");
+      return;
+    }
+    alert(message || "Registered for Valentine Week 💌");
+  } catch (err) {
+    alert("Server not reachable, try again later 💌");
+  }
 }
 
 function eatNoButton() {
@@ -85,6 +93,8 @@ function eatNoButton() {
   { transform: "scale(2.3)" },
   { transform: "scale(2)" }
 ], { duration: 400 });
+
+  playChompSound();
 
   // shrink NO
   noBtn.classList.add("eaten");
@@ -112,4 +122,27 @@ function triggerYesSuccess() {
     spread: 90,
     origin: { y: 0.6 }
   });
+}
+
+function playChompSound() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const oscillator = ctx.createOscillator();
+    const gain = ctx.createGain();
+    oscillator.type = "square";
+    oscillator.frequency.setValueAtTime(260, ctx.currentTime);
+    oscillator.frequency.exponentialRampToValueAtTime(140, ctx.currentTime + 0.12);
+    gain.gain.setValueAtTime(0.2, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.18);
+    oscillator.connect(gain).connect(ctx.destination);
+    oscillator.start();
+    oscillator.stop(ctx.currentTime + 0.2);
+    oscillator.onended = () => ctx.close();
+  } catch (e) {
+    // ignore if audio is blocked
+  }
+}
+
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
