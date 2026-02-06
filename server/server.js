@@ -6,9 +6,16 @@ import { valentineTemplates } from "./templates.js";
 import { sendMail } from "./mailer.js";
 import rateLimit from "express-rate-limit";
 
-
 const app = express();
-app.use(cors());
+import fs from "fs";
+
+if (!fs.existsSync("users.json")) {
+  fs.writeFileSync("users.json", "[]");
+}
+
+app.use(cors({
+  origin: "*",  
+}));
 app.use(express.json());
 
 let emails =[];
@@ -45,6 +52,5 @@ app.post("/save-email", async (req, res) => {
 
 startScheduler(emails);
 
-app.listen(3000, () => {
-  console.log("Server started on http://localhost:3000");
-});
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, ()=> console.log("Server running"));
