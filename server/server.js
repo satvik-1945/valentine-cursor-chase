@@ -38,7 +38,7 @@ app.post("/save-email", async (req, res) => {
 
   //send Immediately the email of the day
   const t = valentineTemplates[startIndex];
-  await sendMail(email, t.subject, t.body);
+  await sendMail(email, t.subject, t.text);
 
   users.push({
     email,
